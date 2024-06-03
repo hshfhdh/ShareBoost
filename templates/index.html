@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Share Boost</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #444;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 13vh;
+        }
+        h1 {
+            font-size: 27px;
+            margin: 0;
+            margin-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .neon-border {
+            padding: 20px;
+            margin: auto;
+            margin-bottom: 20px;
+            width: 290px;
+            position: relative;
+            background-color: #333;
+            border-radius: 10px;
+        }
+        .input-field {
+            border: 1px solid #ccc; 
+            background-color: #333;
+            color: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: calc(100% - 24px); 
+            box-sizing: border-box;
+        }
+        .input-field::placeholder {
+            color: white; 
+        }
+        .input-field:focus {
+            outline: none;            
+            border-color: white; 
+        }
+        input[type="submit"] {
+            background-color: #333; 
+            color: white;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 92%;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #28a745;
+        }
+        .neon-green {
+            color: white; 
+        }
+        .neon-red {
+            color: #ff0000;
+        }
+        .log {
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            border: 2px solid #ccc;
+            background-color: #333;
+            overflow-y: auto;
+            margin: auto;
+            width: 290px;
+            max-height: 200px;
+        }
+        .log-item {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .log-item.success {
+            color: #39ff14;
+        }
+        .log-item.failed {
+            color: #ff0000;
+        }
+
+                .footer {
+     background-color: #333;
+     text-align: center;
+     font-size: 16px;
+     color: #555;
+     margin-top: 50px;
+     border-top: 1px solid #ccc;
+     position: fixed;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+}
+ .footer p {
+     background-image: linear-gradient(
+    -225deg,
+    #00FFFF 0%,
+    #49413F 29%,
+    #16F529 67%,
+    #FFA500 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 28% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+      font-size: 17px;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+        header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px 0;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+    </style>
+</head>
+<body>
+   <header>
+     <h1>RPSHARER</h1>
+     <span style="margin-left: 10px;">Time: </span><span id="time"></span>
+   </header>
+    <div class="container">
+        <form id="postForm">
+            <div class="neon-border">
+                    <h2 style="color: white;">
+                      SHARE FORM
+                    </h2>
+                <div>
+                    <input type="text" id="cookie" class="input-field neon-green" placeholder="Enter Facebook cookie :" name="cookie">
+                </div>
+
+                <div>
+                    <input type="text" id="link" class="input-field neon-green" placeholder="Enter Post link :" name="link">
+                </div>
+
+                <div>
+                    <input type="number" id="limit" class="input-field neon-green" placeholder="Enter Share Limit :" name="limit">
+                </div>
+
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+
+        <div class="log" id="log">
+            <div class="log-item">Console:</div>
+            <!-- Log items will be dynamically added here -->
+        </div>
+    </div>       <div class="footer">
+             <p>DEVELOPED BY : KIFF HYACINTH PON</p>
+           </div>
+                  <div class="footer">
+                    <p>DEVELOPED BY : KIFF HYACINTH PON</p>
+                  </div>
+
+    <script>
+        document.getElementById("postForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+
+            var cookie = document.getElementById("cookie").value;
+            var link = document.getElementById("link").value;
+            var limit = document.getElementById("limit").value;
+
+            var log = document.getElementById('log');
+            var successCount = 0;
+
+            // Start posting links
+            for (var i = 1; i <= limit; i++) {
+                var data = {
+                    cookie: cookie,
+                    link: link,
+                    limit: i
+                };
+
+                fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response:', data);
+
+                    if (data.success) {
+                        successCount++;
+                        var successLogItem = document.createElement('div');
+                        successLogItem.classList.add('log-item', 'success');
+                        successLogItem.textContent = "✅ Successfully Share: " + successCount;
+                        log.appendChild(successLogItem);
+                    } else {
+                        var failedLogItem = document.createElement('div');
+                        failedLogItem.classList.add('log-item', 'failed');
+                        failedLogItem.textContent = "❌ Failed to post: " + data.message;
+                        log.appendChild(failedLogItem);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert("❗ An error occurred."); // Display error message
+                });
+            }
+        });
+
+        function updateTime() {
+          const now = new Date();
+          const options = {
+            timeZone: 'Asia/Manila',
+            hour12: true,
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+          };
+          const formattedTime = now.toLocaleString('en-US', options);
+          document.getElementById('time').textContent = formattedTime;
+        }
+
+        updateTime(); // Call the function initially
+
+        // Call the updateTime function every second (1000 milliseconds)
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
